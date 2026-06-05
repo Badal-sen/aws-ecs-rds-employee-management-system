@@ -4,4 +4,4 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Hello from ECS Fargate Project"
+    return "Version 2 - Deployed from Github"
