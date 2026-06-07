@@ -1,10 +1,10 @@
-from flask import Flask, render_template_string, request, redirect
+from flask import Flask, request, redirect, render_template_string
 
 app = Flask(__name__)
 
 employees = [
     {"id": 1, "name": "John Smith", "position": "Developer"},
-    {"id": 2, "name": "Sarah Johnson", "position": "Manager"},
+    {"id": 2, "name": "Sarah Johnson", "position": "Manager"}
 ]
 
 HTML = """
@@ -28,9 +28,16 @@ HTML = """
     {% for employee in employees %}
         <li>
             {{ employee.name }} - {{ employee.position }}
+
+            <form method="POST"
+                  action="/delete/{{ employee.id }}"
+                  style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>
         </li>
     {% endfor %}
     </ul>
+
 </body>
 </html>
 """
@@ -46,6 +53,12 @@ def add():
         "name": request.form["name"],
         "position": request.form["position"]
     })
+    return redirect("/")
+
+@app.route("/delete/<int:id>", methods=["POST"])
+def delete(id):
+    global employees
+    employees = [e for e in employees if e["id"] != id]
     return redirect("/")
 
 if __name__ == "__main__":
