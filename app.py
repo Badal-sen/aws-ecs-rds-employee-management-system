@@ -1,7 +1,6 @@
-```python
 from flask import Flask, request, redirect, render_template_string
-import os
 import psycopg2
+import os
 
 app = Flask(__name__)
 
@@ -129,8 +128,7 @@ def get_db():
         host=os.environ["DB_HOST"],
         database=os.environ["DB_NAME"],
         user=os.environ["DB_USER"],
-        password=os.environ["DB_PASSWORD"],
-        port=5432
+        password=os.environ["DB_PASSWORD"]
     )
 
 def init_db():
@@ -146,6 +144,7 @@ def init_db():
     """)
 
     conn.commit()
+    cursor.close()
     conn.close()
 
 @app.route("/")
@@ -153,9 +152,15 @@ def home():
     conn = get_db()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM employees ORDER BY id")
+    cursor.execute("""
+        SELECT id, name, position
+        FROM employees
+        ORDER BY id
+    """)
+
     employees = cursor.fetchall()
 
+    cursor.close()
     conn.close()
 
     return render_template_string(
@@ -178,6 +183,8 @@ def add():
     )
 
     conn.commit()
+
+    cursor.close()
     conn.close()
 
     return redirect("/")
@@ -193,13 +200,13 @@ def delete(id):
     )
 
     conn.commit()
+
+    cursor.close()
     conn.close()
 
     return redirect("/")
 
-# Create database/table on startup
 init_db()
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
-```
