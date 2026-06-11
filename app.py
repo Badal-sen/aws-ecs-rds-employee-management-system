@@ -1,5 +1,7 @@
+```python
 from flask import Flask, request, redirect, render_template_string
-import sqlite3
+import os
+import psycopg2
 
 app = Flask(__name__)
 
@@ -76,7 +78,7 @@ th,td{
 
 <div class="header">
 <h1>Employee Management Dashboard</h1>
-<p>AWS ECS + ECR + GitHub Actions CI/CD Demo</p>
+<p>AWS ECS + ECR + GitHub Actions CI/CD + PostgreSQL</p>
 <h2>Total Employees: {{ count }}</h2>
 </div>
 
@@ -123,15 +125,35 @@ th,td{
 """
 
 def get_db():
-    return sqlite3.connect("employees.db")
+    return psycopg2.connect(
+        host=os.environ["DB_HOST"],
+        database=os.environ["DB_NAME"],
+        user=os.environ["DB_USER"],
+        password=os.environ["DB_PASSWORD"],
+        port=5432
+    )
 
-@app.route("/")
-def home():
-
+def init_db():
     conn = get_db()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM employees")
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS employees (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        position VARCHAR(100) NOT NULL
+    )
+    """)
+
+    conn.commit()
+    conn.close()
+
+@app.route("/")
+def home():
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM employees ORDER BY id")
     employees = cursor.fetchall()
 
     conn.close()
@@ -144,7 +166,6 @@ def home():
 
 @app.route("/add", methods=["POST"])
 def add():
-
     name = request.form["name"]
     position = request.form["position"]
 
@@ -152,7 +173,7 @@ def add():
     cursor = conn.cursor()
 
     cursor.execute(
-        "INSERT INTO employees(name, position) VALUES (?, ?)",
+        "INSERT INTO employees (name, position) VALUES (%s, %s)",
         (name, position)
     )
 
@@ -163,12 +184,11 @@ def add():
 
 @app.route("/delete/<int:id>", methods=["POST"])
 def delete(id):
-
     conn = get_db()
     cursor = conn.cursor()
 
     cursor.execute(
-        "DELETE FROM employees WHERE id=?",
+        "DELETE FROM employees WHERE id = %s",
         (id,)
     )
 
@@ -177,5 +197,9 @@ def delete(id):
 
     return redirect("/")
 
+# Create database/table on startup
+init_db()
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+```
