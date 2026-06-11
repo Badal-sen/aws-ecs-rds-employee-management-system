@@ -1,0 +1,5 @@
+.terraform/
+*.tfstate
+*.tfstate.*
+employees.db
+__pycache__/

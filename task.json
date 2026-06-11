@@ -1,0 +1,95 @@
+{
+    "tasks": [
+        {
+            "attachments": [
+                {
+                    "id": "cc72640b-0db2-41ce-89bd-78b0c4a9caf9",
+                    "type": "ElasticNetworkInterface",
+                    "status": "ATTACHED",
+                    "details": [
+                        {
+                            "name": "subnetId",
+                            "value": "subnet-04de40784ce063685"
+                        },
+                        {
+                            "name": "networkInterfaceId",
+                            "value": "eni-07e240cb0c0542b9f"
+                        },
+                        {
+                            "name": "macAddress",
+                            "value": "06:4f:6a:ae:d8:01"
+                        },
+                        {
+                            "name": "privateIPv4Address",
+                            "value": "10.0.2.211"
+                        }
+                    ]
+                }
+            ],
+            "attributes": [
+                {
+                    "name": "ecs.cpu-architecture",
+                    "value": "x86_64"
+                }
+            ],
+            "availabilityZone": "ap-southeast-2b",
+            "clusterArn": "arn:aws:ecs:ap-southeast-2:360435283583:cluster/employee-cluster",
+            "connectivity": "CONNECTED",
+            "connectivityAt": "2026-06-11T13:43:54.520000+10:00",
+            "containers": [
+                {
+                    "containerArn": "arn:aws:ecs:ap-southeast-2:360435283583:container/employee-cluster/43ffd98fd2d54edfb75ca80ea2774877/3819de8b-eb73-4b29-92da-e4dd0de65250",
+                    "taskArn": "arn:aws:ecs:ap-southeast-2:360435283583:task/employee-cluster/43ffd98fd2d54edfb75ca80ea2774877",
+                    "name": "ecs-flask-app",
+                    "image": "360435283583.dkr.ecr.ap-southeast-2.amazonaws.com/ecs-flask-app:latest",
+                    "imageDigest": "sha256:cbeaddccdbc20aadd2ad809654ff4d794407b2a7b14852db5e445d4b66ceda29",
+                    "runtimeId": "43ffd98fd2d54edfb75ca80ea2774877-0851242086",
+                    "lastStatus": "RUNNING",
+                    "networkBindings": [],
+                    "networkInterfaces": [
+                        {
+                            "attachmentId": "cc72640b-0db2-41ce-89bd-78b0c4a9caf9",
+                            "privateIpv4Address": "10.0.2.211"
+                        }
+                    ],
+                    "healthStatus": "UNKNOWN",
+                    "cpu": "0"
+                }
+            ],
+            "cpu": "256",
+            "createdAt": "2026-06-11T13:43:50.451000+10:00",
+            "desiredStatus": "RUNNING",
+            "enableExecuteCommand": false,
+            "group": "service:ecs-flask-service",
+            "healthStatus": "UNKNOWN",
+            "lastStatus": "RUNNING",
+            "launchType": "FARGATE",
+            "memory": "512",
+            "overrides": {
+                "containerOverrides": [
+                    {
+                        "name": "ecs-flask-app"
+                    }
+                ],
+                "inferenceAcceleratorOverrides": []
+            },
+            "platformVersion": "1.4.0",
+            "platformFamily": "Linux",
+            "pullStartedAt": "2026-06-11T13:44:02.305000+10:00",
+            "pullStoppedAt": "2026-06-11T13:44:07.201000+10:00",
+            "startedAt": "2026-06-11T13:44:08.051000+10:00",
+            "startedBy": "ecs-svc/8184255752079701478",
+            "tags": [],
+            "taskArn": "arn:aws:ecs:ap-southeast-2:360435283583:task/employee-cluster/43ffd98fd2d54edfb75ca80ea2774877",
+            "taskDefinitionArn": "arn:aws:ecs:ap-southeast-2:360435283583:task-definition/ecs-flask-app:1",
+            "version": 4,
+            "ephemeralStorage": {
+                "sizeInGiB": 20
+            },
+            "fargateEphemeralStorage": {
+                "sizeInGiB": 20
+            }
+        }
+    ],
+    "failures": []
+}
