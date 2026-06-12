@@ -1,56 +1,8 @@
-from flask import Flask, request, redirect, render_template_string
+from flask import Flask, request, redirect, render_template
 import psycopg2
 import os
 
 app = Flask(__name__)
-
-HTML = """
-<!DOCTYPE html>
-<html>
-<head>
-<title>Employee Dashboard</title>
-</head>
-<body>
-
-<h1>Employee Management Dashboard</h1>
-<p>AWS ECS + ECR + GitHub Actions CI/CD + PostgreSQL</p>
-
-<h2>Total Employees: {{ count }}</h2>
-
-<form method="POST" action="/add">
-<input type="text" name="name" placeholder="Employee Name" required>
-<input type="text" name="position" placeholder="Position" required>
-<button type="submit">Add Employee</button>
-</form>
-
-<br>
-
-<table border="1">
-<tr>
-<th>ID</th>
-<th>Name</th>
-<th>Position</th>
-<th>Action</th>
-</tr>
-
-{% for employee in employees %}
-<tr>
-<td>{{ employee[0] }}</td>
-<td>{{ employee[1] }}</td>
-<td>{{ employee[2] }}</td>
-<td>
-<form method="POST" action="/delete/{{ employee[0] }}">
-<button type="submit">Delete</button>
-</form>
-</td>
-</tr>
-{% endfor %}
-
-</table>
-
-</body>
-</html>
-"""
 
 def get_db():
     print("Connecting to PostgreSQL...", flush=True)
@@ -96,8 +48,8 @@ def home():
         cursor.close()
         conn.close()
 
-        return render_template_string(
-            HTML,
+        return render_template(
+            "index.html",
             employees=employees,
             count=len(employees)
         )
