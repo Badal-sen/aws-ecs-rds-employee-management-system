@@ -281,6 +281,13 @@ def health():
         print(f"[APP] Health check failed: {e}", file=sys.stderr)
         return {"status": "unhealthy"}, 503
 
+# Initialize database when running under Gunicorn
+if db_pool is None:
+    print("[APP] Initializing database for Gunicorn...")
+    if init_pool():
+        init_db()
+    
+
 if __name__ == "__main__":
     print("[APP] Starting Flask application...")
     
