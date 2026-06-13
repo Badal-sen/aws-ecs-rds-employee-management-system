@@ -2,7 +2,7 @@ from flask import Flask, request, redirect, render_template
 import psycopg2
 import os
 
-app = Flask(**name**)
+app = Flask(__name__)
 
 def get_db():
 return psycopg2.connect(
@@ -124,7 +124,8 @@ return redirect("/")
 @app.route("/delete/<int:id>", methods=["POST"])
 def delete(id):
 conn = get_db()
-cursor = conn.cursor()
+cursor = conn.cursor()aws ecs list-tasks \
+  --cluster employee-cluster
 
 ```
 cursor.execute(
